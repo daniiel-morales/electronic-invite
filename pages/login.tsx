@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { useContext } from 'react'
 
 import Hero from '@/components/Hero'
+import { AuthContext } from '@/context/AuthContext'
 
 export default function Login() {
   const router = useRouter()
   const [usr, setUSR] = useState('')
   const [pss, setPSS] = useState('')
 
+  const { login } = useContext(AuthContext)
+
   const handelSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
-    console.log('LOGIN:')
-    console.log({ usr, pss })
+    login(usr, pss)
   }
 
   return (
