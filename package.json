@@ -9,9 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "18.15.11",
-    "@types/react": "18.0.33",
-    "@types/react-dom": "18.0.11",
+    "cookie": "^0.5.0",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
     "next": "13.2.4",
@@ -24,6 +22,11 @@
     "styled-components": "^5"
   },
   "devDependencies": {
+    "@types/cookie": "^0.5.1",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.13",
+    "@types/react": "^18.0.38",
+    "@types/react-dom": "^18.0.11",
     "@types/styled-components": "^5.1.26"
   }
 }
