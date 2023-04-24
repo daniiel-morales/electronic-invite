@@ -1,20 +1,17 @@
 import { useRouter } from 'next/router'
+
 import Hero from '@/components/Hero'
+import { NEXT_URL } from '@/config/constants'
 
 type Event = {
   name: string
   date: string
 }
 
-export default function Host() {
+export default function Host({ events }: { events: Event[] }) {
   const router = useRouter()
   const { host } = router.query
-  const events: Event[] = [
-    {
-      name: 'Mis 15s',
-      date: '12-Oct-2023'
-    }
-  ]
+
   return (
     <Hero title={`Eventos de ${host}:`} img="/vercel.svg">
       <div className="list-group">
@@ -38,4 +35,19 @@ export default function Host() {
       </div>
     </Hero>
   )
+}
+
+export async function getServerSideProps() {
+  const res = await fetch(`${NEXT_URL}/events`)
+  const { events: eventsList } = await res.json()
+
+  const events: Event[] = eventsList.map((e: Event) => {
+    return { name: e.name, date: e.date }
+  })
+
+  return {
+    props: {
+      events
+    }
+  }
 }
