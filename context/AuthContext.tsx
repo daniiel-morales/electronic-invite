@@ -35,9 +35,31 @@ export default function AuthProvider({ children }: AuthProvider) {
     checkToken()
   }, [])
 
-  const register = async (id: String, usr: String, pss: String) => {
-    console.log('REGISTER:')
-    console.log({ id, usr, pss })
+  const register = async (
+    usr: String,
+    email: String,
+    pss: String,
+    pss2: String
+  ) => {
+    if (pss2 === pss) {
+      const res = await fetch(`${NEXT_URL}/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ usr, email, pss })
+      })
+      const data = await res.json()
+
+      if (res.ok && data?.usr) {
+        setUSR(data.usr)
+        router.push(`/${data.usr}`)
+      } else {
+        setERR(data?.message)
+      }
+    } else {
+      setERR('Passwords don`t match')
+    }
   }
 
   const login = async (usr: String, pss: String) => {
@@ -50,8 +72,9 @@ export default function AuthProvider({ children }: AuthProvider) {
     })
     const data = await res.json()
 
-    if (res.ok) {
-      setUSR(data?.usr)
+    if (res.ok && data?.usr) {
+      setUSR(data.usr)
+      router.push(`/${data.usr}`)
     } else {
       setERR(data?.message)
     }

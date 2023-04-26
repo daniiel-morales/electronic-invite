@@ -12,7 +12,7 @@ export default function Home() {
 
   const { err, login } = useContext(AuthContext)
 
-  const handelSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
     login(usr, pss)
@@ -26,7 +26,7 @@ export default function Home() {
         </div>
       )}
 
-      <form onSubmit={handelSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="inputUSR" className="form-label">
             Email address

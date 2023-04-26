@@ -6,19 +6,17 @@ import { AuthContext } from '@/context/AuthContext'
 
 export default function Login() {
   const router = useRouter()
-  const [id, setID] = useState('')
   const [usr, setUSR] = useState('')
+  const [email, setEMAIL] = useState('')
   const [pss, setPSS] = useState('')
   const [pss2, setPSS2] = useState('')
 
   const { err, register } = useContext(AuthContext)
 
-  const handelSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
-    if (pss2 === pss) {
-      register(id, usr, pss)
-    }
+    register(usr, email, pss, pss2)
   }
 
   return (
@@ -29,25 +27,25 @@ export default function Login() {
         </div>
       )}
 
-      <form onSubmit={handelSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="inputID" className="form-label">
+          <label htmlFor="inputUSR" className="form-label">
             User Name
           </label>
           <input
             type="text"
             className="form-control"
-            id="inputID"
-            onChange={(e) => setID(e.target.value)}
+            id="inputUSR"
+            onChange={(e) => setUSR(e.target.value)}
           />
-          <label htmlFor="inputUSR" className="form-label">
+          <label htmlFor="inputEMAIL" className="form-label">
             Email address
           </label>
           <input
             type="email"
             className="form-control"
-            id="inputUSR"
-            onChange={(e) => setUSR(e.target.value)}
+            id="inputEMAIL"
+            onChange={(e) => setEMAIL(e.target.value)}
           />
         </div>
         <div className="mb-3">
