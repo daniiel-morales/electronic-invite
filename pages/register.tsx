@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { useRouter } from 'next/router'
 
 import Hero from '@/components/Hero'
@@ -11,13 +11,7 @@ export default function Login() {
   const [pss, setPSS] = useState('')
   const [pss2, setPSS2] = useState('')
 
-  const { usr: user_name, err, register } = useContext(AuthContext)
-
-  useEffect(() => {
-    if (user_name) {
-      router.push(`/${user_name}`)
-    }
-  }, [user_name])
+  const { err, register } = useContext(AuthContext)
 
   const handelSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()

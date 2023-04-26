@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
 
@@ -10,13 +10,7 @@ export default function Home() {
   const [usr, setUSR] = useState('')
   const [pss, setPSS] = useState('')
 
-  const { usr: user_name, err, login } = useContext(AuthContext)
-
-  useEffect(() => {
-    if (user_name) {
-      router.push(`/${user_name}`)
-    }
-  }, [user_name])
+  const { err, login } = useContext(AuthContext)
 
   const handelSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()

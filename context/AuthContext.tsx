@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import type { ReactNode } from 'react'
 
@@ -31,6 +31,10 @@ export default function AuthProvider({ children }: AuthProvider) {
   const [usr, setUSR] = useState('')
   const [err, setERR] = useState('')
 
+  useEffect(() => {
+    checkToken()
+  }, [])
+
   const register = async (id: String, usr: String, pss: String) => {
     console.log('REGISTER:')
     console.log({ id, usr, pss })
@@ -56,6 +60,16 @@ export default function AuthProvider({ children }: AuthProvider) {
   const logout = () => {
     router.push('/')
     setUSR('')
+  }
+
+  const checkToken = async () => {
+    const res = await fetch(`${NEXT_URL}/user`)
+    const { usr } = await res.json()
+
+    if (res.ok) {
+      setUSR(usr)
+      router.push(`/${usr}`)
+    }
   }
 
   return (
