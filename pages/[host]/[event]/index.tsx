@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import Hero from '@/components/Hero'
+import { NEXT_URL } from '@/config/constants'
 
 type Guest = {
   name: string
@@ -23,7 +24,10 @@ export default function Hello({ guests }: Hello) {
           guests.map((gst) => {
             totalCount += Number(gst.count)
             return (
-              <li className="list-group-item d-flex justify-content-between align-items-center">
+              <li
+                id={`${gst.name}-${gst.count}-${gst.max}`}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
                 {gst.name}
                 <div>
                   <span className="badge bg-success">{gst.count}</span>
@@ -58,9 +62,29 @@ export default function Hello({ guests }: Hello) {
   )
 }
 
-export async function getServerSideProps() {
-  const res = await fetch('http://localhost:3000/api')
-  const guests: Guest[] = await res.json()
+export async function getServerSideProps({
+  params: { event }
+}: {
+  params: { event: string }
+}) {
+  const res = await fetch(`${NEXT_URL}/guests`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ event })
+  })
+  const { invites: guestsList } = await res.json()
+
+  const guests: Guest[] = guestsList.map(
+    (g: { attributes: { name: string; max: number; count: number } }) => {
+      return {
+        name: g.attributes.name,
+        max: g.attributes.max,
+        count: g.attributes.count
+      }
+    }
+  )
 
   return {
     props: {
