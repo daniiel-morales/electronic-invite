@@ -4,6 +4,7 @@ import Hero from '@/components/Hero'
 import { NEXT_URL } from '@/config/constants'
 
 type Event = {
+  slug: string
   name: string
   date: string
 }
@@ -19,7 +20,7 @@ export default function Host({ events }: { events: Event[] }) {
           events.map((evt) => (
             <div className="list-group">
               <button
-                onClick={() => router.push(`/${host}/${evt.name}`)}
+                onClick={() => router.push(`/${host}/${evt.slug}`)}
                 className="list-group-item list-group-item-action list-group-item-light"
               >
                 <div className="d-flex justify-content-between">
@@ -37,12 +38,22 @@ export default function Host({ events }: { events: Event[] }) {
   )
 }
 
-export async function getServerSideProps() {
-  const res = await fetch(`${NEXT_URL}/events`)
+export async function getServerSideProps({
+  params: { host }
+}: {
+  params: { host: string }
+}) {
+  const res = await fetch(`${NEXT_URL}/events`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ host })
+  })
   const { events: eventsList } = await res.json()
 
   const events: Event[] = eventsList.map((e: Event) => {
-    return { name: e.name, date: e.date }
+    return { slug: e.slug, name: e.name, date: e.date }
   })
 
   return {
