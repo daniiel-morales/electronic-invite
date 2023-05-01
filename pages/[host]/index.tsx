@@ -52,9 +52,10 @@ export async function getServerSideProps({
   })
   const { events: eventsList } = await res.json()
 
-  const events: Event[] = eventsList.map((e: Event) => {
-    return { slug: e.slug, name: e.name, date: e.date }
-  })
+  const events: Event[] =
+    eventsList?.map((e: Event) => {
+      return { slug: e.slug, name: e.name, date: e.date }
+    }) ?? []
 
   return {
     props: {
