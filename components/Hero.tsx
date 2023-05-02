@@ -15,7 +15,7 @@ export default function Hero({ img, title, description, children }: Hero) {
   return (
     <div className="container p-4">
       <div className="card">
-        {img && (
+        {img ? (
           <Image
             src={img}
             className="card-img-top"
@@ -23,19 +23,21 @@ export default function Hero({ img, title, description, children }: Hero) {
             width={1}
             height={250}
           />
+        ) : (
+          <div className="pt-5" />
         )}
-        {usr?.username && (
-          <div className="d-flex justify-content-end">
-            <button onClick={() => logout()} className="btn btn-link">
-              Logout
-            </button>
-          </div>
-        )}
-        <div className="card-body">
+        <div className="container px-5 pb-5">
+          {usr?.username && (
+            <div className="d-flex justify-content-end">
+              <button onClick={() => logout()} className="btn btn-link">
+                Logout
+              </button>
+            </div>
+          )}
           <h5 className="card-title">{title}</h5>
           <p className="card-text">{description}</p>
+          {children}
         </div>
-        <div className="container p-5">{children}</div>
       </div>
     </div>
   )
