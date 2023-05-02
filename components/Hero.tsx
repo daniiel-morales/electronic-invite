@@ -1,6 +1,7 @@
 import Image from 'next/image'
-import { ReactNode } from 'react'
-import styled from 'styled-components'
+import { ReactNode, useContext } from 'react'
+
+import { AuthContext } from '@/context/AuthContext'
 
 type Hero = {
   img?: string
@@ -9,12 +10,8 @@ type Hero = {
   children?: ReactNode
 }
 
-const Conta = styled.div`
-  width: 18rem;
-  margin: 1rem;
-`
-
 export default function Hero({ img, title, description, children }: Hero) {
+  const { usr, logout } = useContext(AuthContext)
   return (
     <div className="container p-4">
       <div className="card">
@@ -26,6 +23,13 @@ export default function Hero({ img, title, description, children }: Hero) {
             width={1}
             height={250}
           />
+        )}
+        {usr?.username && (
+          <div className="d-flex justify-content-end">
+            <button onClick={() => logout()} className="btn btn-link">
+              Logout
+            </button>
+          </div>
         )}
         <div className="card-body">
           <h5 className="card-title">{title}</h5>

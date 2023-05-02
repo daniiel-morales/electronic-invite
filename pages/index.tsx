@@ -36,6 +36,7 @@ export default function Home() {
             className="form-control"
             id="inputUSR"
             onChange={(e) => setUSR(e.target.value)}
+            required
           />
         </div>
         <div className="mb-3">
@@ -47,6 +48,7 @@ export default function Home() {
             className="form-control"
             id="inputPSS"
             onChange={(e) => setPSS(e.target.value)}
+            required
           />
         </div>
         <button type="submit" className="btn btn-primary">

@@ -9,7 +9,7 @@ interface AuthProvider {
 }
 
 interface AuthContext {
-  usr: String
+  usr: { id: number; username: String }
   err: String
   register: Function
   login: Function
@@ -17,7 +17,7 @@ interface AuthContext {
 }
 
 const defaultValue = {
-  usr: '',
+  usr: { id: -1, username: '' },
   err: '',
   register: () => {},
   login: () => {},
@@ -28,8 +28,8 @@ export const AuthContext = createContext<AuthContext>(defaultValue)
 
 export default function AuthProvider({ children }: AuthProvider) {
   const router = useRouter()
-  const [usr, setUSR] = useState('')
-  const [err, setERR] = useState('')
+  const [usr, setUSR] = useState(defaultValue.usr)
+  const [err, setERR] = useState(defaultValue.err)
 
   useEffect(() => {
     checkToken()
@@ -52,7 +52,7 @@ export default function AuthProvider({ children }: AuthProvider) {
       const data = await res.json()
 
       if (res.ok && data?.usr) {
-        setUSR(data.usr)
+        setUSR({ id: data.id, username: data.usr })
         router.push(`/${data.usr}`)
       } else {
         setERR(data?.message)
@@ -73,25 +73,29 @@ export default function AuthProvider({ children }: AuthProvider) {
     const data = await res.json()
 
     if (res.ok && data?.usr) {
-      setUSR(data.usr)
+      setUSR({ id: data.id, username: data.usr })
       router.push(`/${data.usr}`)
     } else {
       setERR(data?.message)
     }
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await fetch(`${NEXT_URL}/logout`, { method: 'POST' })
+    setUSR(defaultValue.usr)
     router.push('/')
-    setUSR('')
   }
 
   const checkToken = async () => {
     const res = await fetch(`${NEXT_URL}/user`)
-    const { usr } = await res.json()
+    const { id, usr } = await res.json()
 
     if (res.ok) {
-      setUSR(usr)
+      setUSR({ id: Number(id), username: `${usr}` })
       router.push(`/${usr}`)
+    } else {
+      setUSR(defaultValue.usr)
+      router.push('/')
     }
   }
 

@@ -20,7 +20,7 @@ const user = async (req: Request, res: Response) => {
     const data = await strapiRes.json()
 
     if (strapiRes.ok) {
-      return res.status(200).json({ usr: data.username })
+      return res.status(200).json({ id: data.id, usr: data.username })
     }
     return res.status(data.error.status).json({ message: data.error.message })
   }

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Hero from '@/components/Hero'
 import { AuthContext } from '@/context/AuthContext'
 
-export default function Login() {
+export default function Register() {
   const router = useRouter()
   const [usr, setUSR] = useState('')
   const [email, setEMAIL] = useState('')
@@ -37,6 +37,7 @@ export default function Login() {
             className="form-control"
             id="inputUSR"
             onChange={(e) => setUSR(e.target.value)}
+            required
           />
           <label htmlFor="inputEMAIL" className="form-label">
             Email address
@@ -46,6 +47,7 @@ export default function Login() {
             className="form-control"
             id="inputEMAIL"
             onChange={(e) => setEMAIL(e.target.value)}
+            required
           />
         </div>
         <div className="mb-3">
@@ -57,6 +59,7 @@ export default function Login() {
             className="form-control"
             id="inputPSS"
             onChange={(e) => setPSS(e.target.value)}
+            required
           />
         </div>
         <div className="mb-3">
@@ -68,13 +71,14 @@ export default function Login() {
             className="form-control"
             id="inputPSS2"
             onChange={(e) => setPSS2(e.target.value)}
+            required
           />
         </div>
         <button type="submit" className="btn btn-primary">
           Register
         </button>
       </form>
-      <button onClick={() => router.push('/login')} className="btn btn-link">
+      <button onClick={() => router.push('/')} className="btn btn-link">
         Login
       </button>
     </Hero>
