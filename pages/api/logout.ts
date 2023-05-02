@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 import cookie from 'cookie'
 
-export default async (req: Request, res: Response) => {
+const logout = async (req: Request, res: Response) => {
   if (req.method.includes('POST')) {
     res.setHeader(
       'Set-Cookie',
@@ -18,3 +18,5 @@ export default async (req: Request, res: Response) => {
   res.setHeader('Allow', ['POST'])
   return res.status(405).json({ message: 'Method not allowed' })
 }
+
+export default logout

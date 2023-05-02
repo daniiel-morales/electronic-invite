@@ -2,9 +2,9 @@ import type { Request, Response } from 'express'
 
 import { API_URL } from '@/config/constants'
 
-export default async (req: Request, res: Response) => {
+const events = async (req: Request, res: Response) => {
   if (req.method === 'POST') {
-    const usr = req.body
+    const { usr } = req.body
     const data = await fetch(
       `${API_URL}/users?populate=events&fields[0]=username&filters[username][$eq]=${usr}`,
       {
@@ -23,3 +23,5 @@ export default async (req: Request, res: Response) => {
   res.setHeader('Allow', ['POST'])
   return res.status(405).json({ message: 'Method not allowed' })
 }
+
+export default events

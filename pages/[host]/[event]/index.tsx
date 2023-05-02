@@ -25,13 +25,12 @@ export default function Hello({ guests }: Hello) {
             totalCount += Number(gst.count)
             return (
               <li
-                id={`${gst.name}-${gst.count}-${gst.max}`}
+                key={`${gst.name}-${gst.count}-${gst.max}`}
                 className="list-group-item d-flex justify-content-between align-items-center"
               >
                 {gst.name}
                 <div>
                   <span className="badge bg-success">{gst.count}</span>
-                  <></>
                   <span className="badge bg-danger">{gst.max - gst.count}</span>
                 </div>
               </li>
@@ -74,21 +73,25 @@ export async function getServerSideProps({
     },
     body: JSON.stringify({ event })
   })
-  const { invites: guestsList } = await res.json()
 
-  const guests: Guest[] = guestsList.map(
-    (g: { attributes: { name: string; max: number; count: number } }) => {
-      return {
-        name: g.attributes.name,
-        max: g.attributes.max,
-        count: g.attributes.count
+  if (res.ok) {
+    const { invites: guestsList } = await res.json()
+
+    const guests: Guest[] = guestsList.map(
+      (g: { attributes: { name: string; max: number; count: number } }) => {
+        return {
+          name: g.attributes.name,
+          max: g.attributes.max,
+          count: g.attributes.count
+        }
+      }
+    )
+
+    return {
+      props: {
+        guests
       }
     }
-  )
-
-  return {
-    props: {
-      guests
-    }
   }
+  return { props: {} }
 }

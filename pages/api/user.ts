@@ -3,7 +3,7 @@ import cookie from 'cookie'
 
 import { API_URL } from '@/config/constants'
 
-export default async (req: Request, res: Response) => {
+const user = async (req: Request, res: Response) => {
   if (req.method.includes('GET')) {
     if (!req.headers.cookie) {
       return res.status(403).json({ message: 'Unauthorized User' })
@@ -27,3 +27,5 @@ export default async (req: Request, res: Response) => {
   res.setHeader('Allow', ['GET'])
   return res.status(405).json({ message: 'Method not allowed' })
 }
+
+export default user

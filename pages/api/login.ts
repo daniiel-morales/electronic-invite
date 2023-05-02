@@ -3,7 +3,7 @@ import cookie from 'cookie'
 
 import { API_URL } from '@/config/constants'
 
-export default async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
   if (req.method.includes('POST')) {
     const { usr, pss } = req.body
 
@@ -29,10 +29,12 @@ export default async (req: Request, res: Response) => {
           path: '/'
         })
       )
-      return res.status(200).json({ usr: data.user.username })
+      return res.status(200).json({ id: data.user.id, usr: data.user.username })
     }
     return res.status(data.error.status).json({ message: data.error.message })
   }
   res.setHeader('Allow', ['POST'])
   return res.status(405).json({ message: 'Method not allowed' })
 }
+
+export default login
