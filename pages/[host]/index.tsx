@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import type { Request } from 'express'
 
 import Hero from '@/components/Hero'
 import { NEXT_URL } from '@/config/constants'
@@ -15,10 +16,17 @@ export default function Host({ events }: { events: Event[] }) {
 
   return (
     <Hero title={`Eventos de ${host}:`} img="/vercel.svg">
+      <button
+        type="button"
+        className="btn btn-success mb-4"
+        onClick={() => router.push(`/${host}/create`)}
+      >
+        Crear Evento
+      </button>
       <div className="list-group">
         {events &&
           events.map((evt) => (
-            <div className="list-group">
+            <div key={`${evt.slug}`} className="list-group">
               <button
                 onClick={() => router.push(`/${host}/${evt.slug}`)}
                 className="list-group-item list-group-item-action list-group-item-light"
@@ -39,16 +47,23 @@ export default function Host({ events }: { events: Event[] }) {
 }
 
 export async function getServerSideProps({
+  req,
   params: { host }
 }: {
+  req: Request
   params: { host: string }
 }) {
+  if (!req.headers.cookie) {
+    return {
+      props: {}
+    }
+  }
   const res = await fetch(`${NEXT_URL}/events`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ host })
+    body: JSON.stringify({ usr: host })
   })
   const { events: eventsList } = await res.json()
 
