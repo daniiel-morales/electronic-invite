@@ -26,17 +26,19 @@ export default function Hero({ img, title, description, children }: Hero) {
         ) : (
           <div className="pt-5" />
         )}
-        <div className="container px-5 pb-5">
-          {usr?.username && (
-            <div className="d-flex justify-content-end">
-              <button onClick={() => logout()} className="btn btn-link">
-                Logout
-              </button>
-            </div>
-          )}
-          <h5 className="card-title">{title}</h5>
-          <p className="card-text">{description}</p>
-          {children}
+        <div className="pb-4">
+          <div className="container px-md-5 pb-md-4">
+            {usr?.username && (
+              <div className="d-flex justify-content-end">
+                <button onClick={() => logout()} className="btn btn-link">
+                  Logout
+                </button>
+              </div>
+            )}
+            <h5 className="card-title">{title}</h5>
+            <p className="card-text">{description}</p>
+            {children}
+          </div>
         </div>
       </div>
     </div>

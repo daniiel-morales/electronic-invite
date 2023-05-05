@@ -11,8 +11,6 @@ const create = async (req: Request, res: Response) => {
     const { usr, name, description, date } = req.body
     const { token } = cookie.parse(req.headers.cookie)
 
-    console.log({ host: usr.id, name, description, date })
-
     const strapiRes = await fetch(`${API_URL}/events`, {
       method: 'POST',
       headers: {
